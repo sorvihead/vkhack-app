@@ -1,5 +1,4 @@
 from app import db
-from app import login
 
 from flask import current_app
 from flask import url_for
@@ -62,8 +61,8 @@ class User(db.Model):
             'last_seen': self.last_seen.isoformat() + 'Z',
             'about_me': self.about_me,
             '_links': {
-                'self': url_for('main.get_user', id=self.id),
-                'avatar': self.avatar
+                'self': '123',
+                'avatar': self.avatar(36)
             }
         }
         
@@ -73,6 +72,7 @@ class User(db.Model):
         return data
 
     def from_dict(self, data, new_user=False):
+        print(data)
         for field in ['username', 'email', 'about_me']:
             if field in data:
                 setattr(self, field, data[field])

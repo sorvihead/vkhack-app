@@ -19,13 +19,12 @@ def create_app(config_class=Config):
     app.config.from_object(config_class)
     
     db.init_app(app)
-    login.init_app(app)
     migrate.init_app(app, db)
     mail.init_app(app)
     ma.init_app(app)
 
     from app.auth import bp as auth_bp
-    app.register_blueprint(auth_bp, url_prefix='auth')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app
 
