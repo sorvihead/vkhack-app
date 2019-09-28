@@ -54,33 +54,54 @@ def edit_user(pk):
 @bp.route('/organizations/get/<int:pk>', methods=['GET'])
 @basic_auth.login_required
 def get_organization(pk):
-    return 'ok' # to dict
+    org = Organization.query.get_or_404(pk)
+    return org_schema.jsonify(org)
 
 
 @bp.route('/organizations/edit/<int:pk>', methods=['PUT'])
 @basic_auth.login_required
 def edit_organization(pk):
-    return 'ok'
+    org = Organization.query.get_or_404(pk)
+    data = request.get_json()
+    email_duplicate = Organization.query.filter_by(email=data.get('email')).first()
+    if email_duplicate and email_duplicate != org:
+        return jsonify({"error": "email must be unique"})
+    for key in data:
+        setattr(org, key, data[key])
+    db.session.add(org)
+    db.session.commit()
+    return user_schema.jsonify(org)
 
 
 @bp.route('/organizations/get', methods=['GET'])
 @basic_auth.login_required
 def get_organizations():
-    return 'ok'
+    return orgs_schema.jsonify(Organization.query.all())
 
 
 #  EVENTS
 @bp.route('/events/get', methods=['GET'])
 @basic_auth.login_required
-def get_event_from_org():
-    oid = request.json.get('oid', '', type=int)
-    if not oid:
-        oid = 1
-    org = Organization.query.get_or_404(oid)
-    return 'ok'  # to dict
+def get_events():
+    return events_schema.jsonify(Events.query.all())
 
 
-@bp.route('/events/get/<int:pk>')
+@bp.route('/events/get/<int:pk>', methods=['GET'])
 @basic_auth.login_required
 def get_event(pk):
-    return 'ok' # to dict
+    event = Event.query.get_or_404(pk)
+    return event_schema.jsonify(event)
+
+
+@bp.route('/events/edit/<int:pk>', methods=['PUT'])
+@basic_auth.login_required
+def edit_event(pk):
+    event = Event.query.get_or_404(pk)
+    data = request.get_json()
+    for key in data:
+        setattr(event, key, data[key])
+    db.session.add(event)
+    db.session.commit()
+    return event_schema.jsonify(event)
+
+

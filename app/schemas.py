@@ -46,8 +46,8 @@ class OrganizationSchema(ma.ModelSchema):
 
     _links = ma.Hyperlinks({
         'self': ma.URLFor('main.get_organization', pk='<id >'),
-        # 'edit': ma.URLFor('main.edit_organization', pk='<id >'),
-        # 'collection': ma.URLFor('main.get_organizations'),
+        'edit': ma.URLFor('main.edit_organization', pk='<id>'),
+        'collection': ma.URLFor('main.get_organizations'),
         # 'admins': ma.List(ma.HyperlinkRelated('main.get_organization_admins')),
         # 'users': ma.List(ma.HyperlinkRelated('main.get_organization_users'))
     })
@@ -63,8 +63,8 @@ class EventSchema(ma.ModelSchema):
 
     _links = ma.Hyperlinks({
         'self': ma.URLFor('main.get_event', pk='<id >'),
-        # 'edit': ma.URLFor('main.edit_event', pk='<id >'),
-        # 'collection': ma.URLFor('main.get_events'),
+        'edit': ma.URLFor('main.edit_event', pk='<id >'),
+        'collection': ma.URLFor('main.get_events'),
         # 'admins': ma.List(ma.HyperlinkRelated('main.get_event_users')),
         # 'users': ma.List(ma.HyperlinkRelated('main.get_event_admins'))
     })
