@@ -1,23 +1,25 @@
 from flask import g
-from flask_httpauth import HTTPBasicAuth
+
+from app import basic_auth
 
 from app.models import User
-from app.auth.errors import error_response
-
-basic_auth = HTTPBasicAuth()
+from app.errors.errors import error_response
 
 
 @basic_auth.verify_password
 def verify_password(username, password):
-    user = User.query.filter_by(username=username).first()
+    print(username)
+    user = User.query.filter_by(email=username).first()
+    print(username, password, user.check_password(password))
     if not user:
         return False
 
     g.current_user = user
+    print(g.current_user)
+
     return user.check_password(password)
 
 
 @basic_auth.error_handler
 def basic_auth_error():
     return error_response(401)
-    
