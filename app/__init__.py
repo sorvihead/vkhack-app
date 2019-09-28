@@ -2,7 +2,6 @@ from config import Config
 
 from flask import Flask
 
-from flask_mail import Mail
 from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
@@ -10,7 +9,6 @@ from flask_httpauth import HTTPBasicAuth
 
 basic_auth = HTTPBasicAuth()
 db = SQLAlchemy()
-mail = Mail()
 ma = Marshmallow()
 migrate = Migrate()
 
@@ -21,7 +19,6 @@ def create_app(config_class=Config):
     
     db.init_app(app)
     migrate.init_app(app, db)
-    mail.init_app(app)
     ma.init_app(app)
 
     from app.auth import bp as auth_bp
