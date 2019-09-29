@@ -6,6 +6,7 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
+from flask_socketio import SocketIO
 
 basic_auth = HTTPBasicAuth()
 db = SQLAlchemy()
