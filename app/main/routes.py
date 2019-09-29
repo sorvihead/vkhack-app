@@ -22,8 +22,8 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 org_schema = OrganizationSchema()
 orgs_schema = OrganizationSchema(many=True)
-event_schema = OrganizationSchema()
-events_schema = OrganizationSchema(many=True)
+event_schema = EventSchema()
+events_schema = EventSchema(many=True)
 
 
 #  USERS
@@ -70,7 +70,7 @@ def edit_organization(pk):
         setattr(org, key, data[key])
     db.session.add(org)
     db.session.commit()
-    return user_schema.jsonify(org)
+    return org_schema.jsonify(org)
 
 
 @bp.route('/organizations/get', methods=['GET'])
@@ -80,6 +80,17 @@ def get_organizations():
 
 
 #  EVENTS
+@bp.route('/events/add', methods=['POST'])
+@basic_auth.login_required
+def add_event():
+    event = event_schema.load(request.get_json())
+    db.session.add(event)
+    db.session.commit()
+    response = event_schema.jsonify(event)
+    response.status_code = 201
+    return response
+
+
 @bp.route('/events/get', methods=['GET'])
 @basic_auth.login_required
 def get_events():

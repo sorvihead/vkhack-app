@@ -16,6 +16,7 @@ class Config(object):
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['sorvihead1@gmail.com', 'novoid86@yandex.ru']
     ELASTICSEARCH_URL = os.environ.get('ELASTICSEARCH_URL') or None
+    SECRET_KEY = 'ASDFQWERTYY12345DS'
 
 
 class TestConfig(Config):

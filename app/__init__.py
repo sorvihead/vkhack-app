@@ -6,7 +6,6 @@ from flask_marshmallow import Marshmallow
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_httpauth import HTTPBasicAuth
-from flask_socketio import SocketIO
 
 basic_auth = HTTPBasicAuth()
 db = SQLAlchemy()
@@ -30,6 +29,9 @@ def create_app(config_class=Config):
 
     from app.errors import bp as error_bp
     app.register_blueprint(error_bp)
+
+    from app.chat import bp as chat_bp
+    app.register_blueprint(chat_bp)
 
     return app
 

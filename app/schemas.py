@@ -4,6 +4,8 @@ from app import db
 from app.models import User
 from app.models import Organization
 from app.models import Event
+from app.models import Chat
+from app.models import Message
 
 from marshmallow import ValidationError
 from marshmallow import post_load
@@ -68,3 +70,27 @@ class EventSchema(ma.ModelSchema):
         # 'admins': ma.List(ma.HyperlinkRelated('main.get_event_users')),
         # 'users': ma.List(ma.HyperlinkRelated('main.get_event_admins'))
     })
+
+
+class ChatSchema(ma.ModelSchema):
+    id = Integer(required=False, data_key="chat")
+    name = Str(required=True)
+    created_at = DateTime(required=False)
+    messages = Nested('MessageSchema', many=True, exclude=('chat', ), required=False)
+    users = Pluck('UserSchema', 'id', many=True, required=True)
+    event = Pluck('EventSchema', 'id', many=False, required=True)
+
+    class Meta(BaseSchema.Meta):
+        model = Chat
+
+
+class MessageSchema(ma.ModelSchema):
+    id = Integer(required=False)
+    text = Str(required=True)
+    created_at = DateTime(required=False)
+    author = Pluck('UserSchema', "id", required=True, many=False)
+    chat = Pluck('ChatSchema', "id", required=True, many=False)
+
+    class Meta(BaseSchema.Meta):
+        model = Message
+        
